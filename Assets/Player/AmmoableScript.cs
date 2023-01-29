@@ -13,7 +13,7 @@ public class AmmoableScript : MonoBehaviour
 
     private Vector3 scaleVector;
 
-  //  private ParticleSystem explodeParticle;
+    private ParticleSystem explodeParticle;
 
     void Start()
     {
@@ -22,9 +22,9 @@ public class AmmoableScript : MonoBehaviour
 
         scaleVector = transform.localScale / scaleMod;
 
-     //   explodeParticle = parentTransform.GetChild(1).GetComponent<ParticleSystem>();
-     //   var main = explodeParticle.main;
-     //   main.startColor = GetComponent<MeshRenderer>().material.color;
+        explodeParticle = transform.parent.GetChild(1).GetComponent<ParticleSystem>();
+        var main = explodeParticle.main;
+        main.startColor = GetComponent<MeshRenderer>().material.color;
 
         if (playerTransform) return;
 		
@@ -54,7 +54,7 @@ public class AmmoableScript : MonoBehaviour
                 StartCoroutine(AmmoToObj());
                 break;
             default:
-                print("WrongState");
+                Debug.Log("WrongState");
                 break;
         }
 	}
@@ -73,20 +73,18 @@ public class AmmoableScript : MonoBehaviour
             RescaleObject(-1);
 
             transform.position = Vector3.MoveTowards(transform.position, playerTransform.position, step);
-            print(transform.localScale);
             yield return new WaitForSeconds(0.5f / scaleMod);
 		}
 
-        shooting.AddShootableObject(gameObject);
+        shooting.AddShootableObject(transform.gameObject);
 
         transform.localScale = Vector3.one * 0.6f;
-        print("ok" + transform.localScale);
         transform.position = playerTransform.position + Vector3.up / 2;
         gameObject.layer = LayerMask.NameToLayer("InnerPlayer");
 
         isAmmo = true;
         transform.rotation = Quaternion.identity;
-        transform.parent = playerTransform;
+        transform.parent.parent = playerTransform;
     }
 
     private IEnumerator AmmoToObj()
@@ -94,9 +92,10 @@ public class AmmoableScript : MonoBehaviour
         if (!isAmmo) yield break;
         gameObject.layer = LayerMask.NameToLayer("Square");
         isAmmo = false;
-        transform.parent = null;
-
+        transform.parent.parent = null;
         transform.localScale = scaleVector * 2;
+
+        gameObject.tag = "PlayerBullet";
 
         for (int i = 0; i < scaleMod - 2; i++)
         {
@@ -105,7 +104,6 @@ public class AmmoableScript : MonoBehaviour
         }
         
         captured = false;
-        gameObject.tag = "PlayerBullet";
     }
 
     public void RescaleObject(float sign)
@@ -115,17 +113,19 @@ public class AmmoableScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision col)
 	{
-        if(col.gameObject.tag == "Harmuful" || col.gameObject.tag == "Boss")
-		{
-
-		}
-        else
+        if (col.gameObject.tag == "Harmuful" || col.gameObject.tag == "Boss") 
+        {
+            explodeParticle.Play();
+            explodeParticle.gameObject.transform.position = transform.position;
+            gameObject.SetActive(false);
+        }
+        else if(transform.localScale.x > scaleVector.x * (scaleMod - 2)) 
             StartCoroutine(ResetTag());
     }
 
     private IEnumerator ResetTag()
 	{
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         gameObject.tag = "Ammoable";
 	}
 

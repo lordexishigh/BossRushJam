@@ -15,10 +15,10 @@ TagManager:
   - Square
   - Water
   - UI
-  - ExplodingSquare
+  - ExplodingProjectiles
   - InnerPlayer
-  - 
-  - 
+  - PostProcessing
+  - SolidWall
   - 
   - 
   - 

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1682593047548930913}
   - component: {fileID: 4177471885883924754}
   - component: {fileID: 5792164825716828022}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TrailingParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4823,7 +4823,7 @@ GameObject:
   - component: {fileID: 5747524725923578761}
   - component: {fileID: 8509913136673358873}
   - component: {fileID: 6463857112997495864}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4907,7 +4907,7 @@ GameObject:
   - component: {fileID: 5798865504014089044}
   - component: {fileID: 6804129340204347919}
   - component: {fileID: -4304352643325588068}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ExplodingLargeSquares
   m_TagString: Harmful
   m_Icon: {fileID: 0}
@@ -4988,7 +4988,7 @@ GameObject:
   - component: {fileID: 8586202654569578198}
   - component: {fileID: 8488251349260879787}
   - component: {fileID: 1296935697057672386}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ExplodingParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}

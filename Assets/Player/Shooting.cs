@@ -17,7 +17,7 @@ public class Shooting : MonoBehaviour
 
         if (velocityMod < 1) velocityMod = 1;
 
-        GameObject tempObj = shootableObjects.Pop();
+        GameObject tempObj = shootableObjects.Pop();//.transform.Find("SquareFunctionality").gameObject;
 
         tempObj.transform.position = transform.position + transform.forward + transform.up;
 

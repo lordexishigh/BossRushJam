@@ -12,33 +12,39 @@ public class SquareBossAbilities : MonoBehaviour
 
     private Transform playerTransform;
 
+    private Transform floorTransform;
+
+    private Transform parentTransform;
+
     private List<Vector3> targetPositions = new List<Vector3>();
 
     private Queue<Transform> shootObjTransQueue = new Queue<Transform>();
 
     private Queue<GameObject> minionGOQueue = new Queue<GameObject>();
 
-    private Transform floorTransform;
+    private int abilitiesActive;
 
-    private int amountOfAbilities = 3;
+    private int maxAbilitiesActive;
 
-    private bool abilityActive = false;
-
-    public static bool inRange = false;
+    private bool inRange = false;
 
     // Start is called before the first frame update
     void Start()
     {
         playerTransform = GameObject.FindWithTag("Player").GetComponent<Transform>();
         floorTransform = GameObject.Find("Floor").GetComponent<Transform>();
+        parentTransform = transform.parent;
+
+        abilitiesActive = 0;
+        maxAbilitiesActive = 1;
 
         float floorScaleDivided = floorTransform.localScale.x / 4;
         for(int i = -1; i < 2; i = i + 2)
 		{
             for(int j = -1; j < 2; j = j + 2)
 			{
-                targetPositions.Add(new Vector3(floorScaleDivided * i, floorTransform.position.y + floorTransform.localScale.y / 2 + 5, floorScaleDivided * j));
-			}
+                targetPositions.Add(transform.position + new Vector3(floorScaleDivided * i, floorTransform.position.y + floorTransform.localScale.y / 2 + 5, floorScaleDivided * j));
+            }
 		}
 
         GameObject obj;
@@ -58,32 +64,37 @@ public class SquareBossAbilities : MonoBehaviour
         //StartCoroutine(RainObjects(50));
         //StartCoroutine(SpinRandomShooting(50));
         StartCoroutine(MinionSpawn(2));
+       // StartCoroutine(SmashPlayer(2));
     }
 
-    private void Update()
+	private void Update()
 	{
-        if (abilityActive || !inRange) return;
-		
-        switch(Random.Range(0, amountOfAbilities))
+		if (abilitiesActive >= maxAbilitiesActive|| !inRange) return;
+
+		switch (Random.Range(0, 4))
 		{
-            case 0:
-                StartCoroutine(AimLockShoot());
-                break;
-            case 1:
-                StartCoroutine(SpinRandomShooting());
-                break;
-            case 2:
-                StartCoroutine(RainObjects());
+			case 0:
+				StartCoroutine(AimLockShoot());
+				break;
+			case 1:
+				StartCoroutine(SpinRandomShooting());
+				break;
+			case 2:
+				StartCoroutine(RainObjects());
+				break;
+            case 3:
+                StartCoroutine(SmashPlayer(4));
                 break;
             default:
-                print("Shit gone wrong");
-                break;
+				print("Shit gone wrong");
+				break;
 		}
-	}
+    }           
 
-    private IEnumerator MinionSpawn(int waves = 1, int minionsPerWave = 4)
+	private IEnumerator MinionSpawn(int waves = 1, int minionsPerWave = 4)
 	{
-        abilityActive = true;
+        while(!inRange) { yield return new WaitForSeconds(5f); }
+
         GameObject obj;
 
         Vector3 spawnPos;
@@ -100,20 +111,18 @@ public class SquareBossAbilities : MonoBehaviour
 
                 spawnPos = targetPositions[locNumber] + 
                     new Vector3(Random.Range(0, floorTransform.localScale.x / 5), 5, Random.Range(0, floorTransform.localScale.x / 5));
-                    
                 
                 obj.transform.position = spawnPos;
                 obj.SetActive(true);
             }
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(2f);
 		}
-
-        abilityActive = false;
+        StartCoroutine(MinionSpawn(Random.Range(1, 3), Random.Range(2, 6)));
     }
 
     private IEnumerator AimLockShoot(int amount = 10)
 	{
-        abilityActive = true;
+        abilitiesActive++; 
 
         for (int i = 0; i < amount; i++)
         {
@@ -122,12 +131,12 @@ public class SquareBossAbilities : MonoBehaviour
 
             yield return new WaitForSeconds(0.75f);
         }
-        abilityActive = false;
+        abilitiesActive--;
     }
 
     private IEnumerator SpinRandomShooting(int amount = 50, float degreePerShot = 15)
 	{
-        abilityActive = true;
+        abilitiesActive++;
 
         float degree = 0;
 
@@ -144,12 +153,12 @@ public class SquareBossAbilities : MonoBehaviour
 
             yield return new WaitForSeconds(0.35f);
         }
-        abilityActive = false;
+        abilitiesActive--;
     }
 
     private IEnumerator RainObjects(int amount = 4)
 	{
-        abilityActive = true;
+        abilitiesActive++;
 
         int centerLocationIndex = 0;
         Transform trans;
@@ -183,7 +192,38 @@ public class SquareBossAbilities : MonoBehaviour
             }
             yield return new WaitForSeconds(2);
         }
-        abilityActive = false;
+        abilitiesActive--;
+    }
+
+    private IEnumerator SmashPlayer(int amount = 4)
+	{
+        abilitiesActive++;
+        Vector3 pos;
+        Vector3 offsetPos;
+        float step;
+
+        for (int i = 0; i < amount; i++)
+        {
+            pos = playerTransform.position + Vector3.up * parentTransform.localScale.y / 2;
+            offsetPos = playerTransform.position + Vector3.up * 100;
+
+            //parentTransform.LookAt(pos + Vector3.up * transform.position.y);
+
+            step = Vector3.Distance(transform.position, offsetPos) / 25;
+
+            for (int j = 0; j < 25; j++) 
+            {
+                parentTransform.position = Vector3.MoveTowards(transform.position, offsetPos, step);
+                yield return new WaitForSeconds(0.02f);
+            }
+
+            for (int j = 0; j < 25; j++)
+            {
+                parentTransform.position = Vector3.MoveTowards(transform.position, pos, step);
+                yield return new WaitForSeconds(0.01f);
+            }
+        }
+        abilitiesActive--;
     }
 
     private void ShootSquare(Quaternion angle)
@@ -216,4 +256,14 @@ public class SquareBossAbilities : MonoBehaviour
         if (col.transform == playerTransform)
             inRange = false;
     }
+
+    public bool GetInRange()
+	{
+        return inRange;
+	}
+
+    public void SetMaxAbilities(int amount = 1)
+	{
+        maxAbilitiesActive += amount;
+	}
 }

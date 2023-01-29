@@ -51,7 +51,7 @@ GameObject:
   - component: {fileID: 7407700539794007827}
   m_Layer: 3
   m_Name: Minion
-  m_TagString: Untagged
+  m_TagString: Harmful
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5109,13 +5109,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4175807893726780931, guid: 276bf54d408fdc142a7e0c1cec96b934, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8082113274666988909, guid: 276bf54d408fdc142a7e0c1cec96b934, type: 3}
       propertyPath: m_Name
       value: AmmoableSquare
       objectReference: {fileID: 0}
     - target: {fileID: 8082113274666988909, guid: 276bf54d408fdc142a7e0c1cec96b934, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 276bf54d408fdc142a7e0c1cec96b934, type: 3}

@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator ChargeParticlesToggle()
 	{
-        chargeParticles.Play();
+        chargeParticles.Play(false);
         yield return new WaitForSeconds(0.5f);
         chargeParticles.Stop();
     }

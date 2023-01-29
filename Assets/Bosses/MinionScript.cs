@@ -18,7 +18,7 @@ public class MinionScript : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         _particleSystem = transform.parent.Find("ParticleSystem").gameObject.GetComponent<ParticleSystem>();
-        ammoGO = transform.parent.Find("AmmoableSquare").gameObject;
+        ammoGO = transform.parent.Find("AmmoableSquare").Find("SquareFunctionality").gameObject;
 
         if (!playerTransform)
 		{

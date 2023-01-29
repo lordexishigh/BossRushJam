@@ -11,14 +11,16 @@ public class SquareBossManager : MonoBehaviour
   
     private GameObject shield;
     private Slider shieldSlider;
-    private ParticleSystem shieldParticleSystem;
     private bool shielded;
     private float shieldHealth;
+
+    private SquareBossAbilities squareAbilities;
 
     private void Start()
 	{
         healthSlider = GameObject.Find("HealthSlider").GetComponent<Slider>();
         shieldSlider = GameObject.Find("ShieldSlider").GetComponent<Slider>();
+        squareAbilities = transform.parent.Find("BossAbilities").gameObject.GetComponent<SquareBossAbilities>();
 
         healthSlider.maxValue = health;
         healthSlider.value = health;
@@ -26,8 +28,6 @@ public class SquareBossManager : MonoBehaviour
         shielded = false;
         shield = transform.GetChild(0).gameObject;
         shield.SetActive(false);
-
-        shieldParticleSystem = transform.GetChild(1).gameObject.GetComponent<ParticleSystem>();
         
         shieldHealth = health - health * 4 / 10;
 
@@ -38,6 +38,7 @@ public class SquareBossManager : MonoBehaviour
 
     private void OnCollisionEnter(Collision col)
 	{
+        if (!squareAbilities.GetInRange()) return;
         GameObject obj = col.gameObject;
         if (!(obj.tag == "PlayerBullet")) return;
 
@@ -49,7 +50,6 @@ public class SquareBossManager : MonoBehaviour
             { 
                 shield.SetActive(false);
                 shieldSlider.gameObject.SetActive(false);
-                shieldParticleSystem.Play(); 
             }
             return;
 		} 
@@ -60,10 +60,10 @@ public class SquareBossManager : MonoBehaviour
 
         if(!shielded && health < 41)
 		{
+            squareAbilities.SetMaxAbilities();
             shielded = true;
             shield.SetActive(true);
             shieldSlider.gameObject.SetActive(true);
-            shieldParticleSystem.Play();
 		}
 
         if(health < 1)
