@@ -5,31 +5,41 @@ using UnityEngine.AI;
 
 public class MinionScript : MonoBehaviour
 {
-    private static Transform playerTransform;
-    private NavMeshAgent agent;
-    private GameObject ammoGO;
-    private Rigidbody rb;
-    private ParticleSystem _particleSystem;
+    [SerializeField]
+    protected GameObject ammoGO;
 
+    [SerializeField]
+    protected ParticleSystem _particleSystem;
+
+    protected static Transform playerTransform;
+
+    protected NavMeshAgent agent;
+    protected Rigidbody rb;
+  
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
 
-        _particleSystem = transform.parent.Find("ParticleSystem").gameObject.GetComponent<ParticleSystem>();
-        ammoGO = transform.parent.Find("AmmoableSquare").Find("SquareFunctionality").gameObject;
-
         if (!playerTransform)
 		{
             playerTransform = GameObject.FindWithTag("Player").GetComponent<Transform>();
         }
+
+        StartFunc();
     }
 
     // Update is called once per frame
     void Update()
     {
+        Move();
+    }
 
+    protected virtual void StartFunc() { }
+
+    protected virtual void Move()
+	{
         agent.destination = playerTransform.position;
     }
 
@@ -41,25 +51,21 @@ public class MinionScript : MonoBehaviour
 			if (temp.GetComponent<PlayerMovement>().GetCharged())
 			{
                 ammoGO.SetActive(true);
-                ammoGO.GetComponent<Rigidbody>().velocity = rb.velocity;
                 ammoGO.transform.position = transform.position;
                 ammoGO.transform.rotation = transform.rotation;
+                ammoGO.GetComponent<Rigidbody>().velocity = rb.velocity;
                 gameObject.SetActive(false);
 			}
 			else
 			{
                 StartCoroutine(MinionExplosion());
             }
+            return;
         }
 
         if(temp.tag == "PlayerBullet")
 		{
-          //  AmmoableScript ammoScript = temp.GetComponent<AmmoableScript>();
-
-           // if (ammoScript.GetCollided() && ammoScript.GetAmmo())
-           
-            TurnToAmmo();
-			
+            TurnToAmmo();	
 		}
 	}
 
@@ -75,10 +81,6 @@ public class MinionScript : MonoBehaviour
         _particleSystem.Play();
         transform.localScale = scaleVec * 20;
         transform.parent.gameObject.SetActive(false);
-
-        //yield return new WaitForSeconds(1.5f);
-
-       
     }
 
     private void TurnToAmmo()

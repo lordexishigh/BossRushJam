@@ -3,27 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SquareBossManager : MonoBehaviour
+public class SquareBossManager : BossManagerParentClass
 {
-	[SerializeField]
-    private float health;
-    private Slider healthSlider;
-  
     private GameObject shield;
     private Slider shieldSlider;
     private bool shielded;
     private float shieldHealth;
 
-    private SquareBossAbilities squareAbilities;
-
-    private void Start()
+    protected override void StartFunc()
 	{
-        healthSlider = GameObject.Find("HealthSlider").GetComponent<Slider>();
         shieldSlider = GameObject.Find("ShieldSlider").GetComponent<Slider>();
-        squareAbilities = transform.parent.Find("BossAbilities").gameObject.GetComponent<SquareBossAbilities>();
-
-        healthSlider.maxValue = health;
-        healthSlider.value = health;
 
         shielded = false;
         shield = transform.GetChild(0).gameObject;
@@ -38,7 +27,7 @@ public class SquareBossManager : MonoBehaviour
 
     private void OnCollisionEnter(Collision col)
 	{
-        if (!squareAbilities.GetInRange()) return;
+        if (!TriangleBossAbilities.GetInRange()) return;
         GameObject obj = col.gameObject;
         if (!(obj.tag == "PlayerBullet")) return;
 
@@ -60,7 +49,7 @@ public class SquareBossManager : MonoBehaviour
 
         if(!shielded && health < 41)
 		{
-            squareAbilities.SetMaxAbilities();
+            abilitiesClass.SetMaxAbilities();
             shielded = true;
             shield.SetActive(true);
             shieldSlider.gameObject.SetActive(true);

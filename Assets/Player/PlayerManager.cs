@@ -19,6 +19,7 @@ public class PlayerManager : MonoBehaviour
         PostProcessVolume volume = GameObject.Find("PostProcessing").GetComponent<PostProcessVolume>();
 
         volume.profile.TryGetSettings<Vignette>(out vignette);
+
         vignette.enabled.Override(true);
         vignette.intensity.Override(0);
     }
@@ -37,10 +38,10 @@ public class PlayerManager : MonoBehaviour
 
     private IEnumerator TakeDamageEffect()
 	{
-        for(int i = 5; i < 0; i--)
+        for (int i = 25; i > -1; i--)
 		{
-            vignette.intensity.Override(i * 0.05f);
-            yield return new WaitForSeconds(0.2f);
+            vignette.intensity.Override(i * 0.01f);
+            yield return new WaitForSeconds(0.04f);
         }
         recentlyDamaged = false;
     }

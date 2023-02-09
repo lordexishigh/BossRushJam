@@ -12,16 +12,16 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Square
+  - PlayerBullets
   - Water
   - UI
   - ExplodingProjectiles
   - InnerPlayer
   - PostProcessing
   - SolidWall
-  - 
-  - 
-  - 
+  - Harmful
+  - Boss
+  - BounceLayer
   - 
   - 
   - 

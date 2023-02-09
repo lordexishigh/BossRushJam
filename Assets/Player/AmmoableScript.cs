@@ -8,17 +8,22 @@ public class AmmoableScript : MonoBehaviour
     private static Shooting shooting;
     private static int scaleMod = 20;
 
+    private Rigidbody rb;
+    private Vector3 scaleVector;
+
     private bool isAmmo;
     private bool captured;
 
-    private Vector3 scaleVector;
-
+    [SerializeField]
+    private ParticleSystem fireParticle;
     private ParticleSystem explodeParticle;
 
     void Start()
     {
         isAmmo = false;
         captured = false;
+
+        rb = GetComponent<Rigidbody>();
 
         scaleVector = transform.localScale / scaleMod;
 
@@ -31,14 +36,7 @@ public class AmmoableScript : MonoBehaviour
         GameObject tempObj = GameObject.FindWithTag("Player");
         playerTransform = tempObj.GetComponent<Transform>();
         shooting = tempObj.GetComponent<Shooting>();
-        
     }
-
-	//private void OnEnable()
-	//{
- //       if (scaleVector == Vector3.zero) return;
- //       StartCoroutine(AmmoToObj());
-	//}
 
     /// <summary>
 	/// 1 for ammo , 2 for obj
@@ -61,12 +59,15 @@ public class AmmoableScript : MonoBehaviour
 
     private IEnumerator ObjToAmmo()
 	{
-        if (isAmmo || captured || shooting.ammoAmount() > 4) yield break;
+        if (isAmmo || captured || shooting.ammoAmount() > 19) yield break;
+
+        rb.useGravity = true;
+        if(fireParticle) { fireParticle.Stop(); }
 
         captured = true;
         float step = Vector3.Distance(transform.position, playerTransform.position) / 20;
 
-        Destroy(GetComponent<HingeJoint>());
+        Destroy(GetComponent<FixedJoint>());
 
         for (int i = 0; i < scaleMod - 2; i++)
 		{
@@ -90,7 +91,7 @@ public class AmmoableScript : MonoBehaviour
     private IEnumerator AmmoToObj()
     {
         if (!isAmmo) yield break;
-        gameObject.layer = LayerMask.NameToLayer("Square");
+        gameObject.layer = LayerMask.NameToLayer("PlayerBullets");
         isAmmo = false;
         transform.parent.parent = null;
         transform.localScale = scaleVector * 2;
