@@ -9,12 +9,16 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private bool onGround;
     private float speed = 70;
+    private float jumpSpeed;
     private float chargeCooldown = 0;
     LayerMask mask;
 
     // Start is called before the first frame update
     void Start()
     {
+        if (UI.GetActiveSceneIndex() == 3) jumpSpeed = 100;
+        else jumpSpeed = 50;
+
         onGround = true;
         mask = LayerMask.GetMask("Default", "Square");
         rb = GetComponent<Rigidbody>();
@@ -33,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(Vector2 inputs)
 	{
-        if(chargeCooldown > 0.5f) { return; }
+        if(chargeCooldown > 0.5f || inputs == Vector2.zero) { return; }
         velocity = transform.forward * inputs.y * speed + transform.right * inputs.x * speed;
         velocity.y = rb.velocity.y;
         rb.velocity = velocity;
@@ -42,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
     public void Jump()
 	{
         if(onGround)
-            rb.velocity = rb.velocity + Vector3.up * 40;
+            rb.velocity = rb.velocity + Vector3.up * jumpSpeed;
 	}
 
     public void ChargeForward()

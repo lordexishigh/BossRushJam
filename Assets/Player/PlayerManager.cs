@@ -26,13 +26,14 @@ public class PlayerManager : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
 	{
-        if (collision.gameObject.tag == "Harmful" && !mov.GetCharged() && !recentlyDamaged)
+        string tag = collision.gameObject.tag;
+        if ((tag == "Harmful" || tag == "Boss") && !mov.GetCharged() && !recentlyDamaged)
         {
             print("hit");
             health -= 1;
             recentlyDamaged = true;
             StartCoroutine(TakeDamageEffect());
-            if(health < 1) { Time.timeScale = 0; print("dead"); }
+            if (health < 1) { Time.timeScale = 0; print("dead"); }
         }
 	}
 

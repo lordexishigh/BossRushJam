@@ -11,16 +11,19 @@ public class MinionScript : MonoBehaviour
     [SerializeField]
     protected ParticleSystem _particleSystem;
 
+    [SerializeField]
+    protected NavMeshAgent agent;
+
+    [SerializeField]
+    protected Rigidbody rb;
+
     protected static Transform playerTransform;
 
-    protected NavMeshAgent agent;
-    protected Rigidbody rb;
-  
     // Start is called before the first frame update
     void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
-        rb = GetComponent<Rigidbody>();
+        if(!agent) agent = GetComponent<NavMeshAgent>();
+        if(!rb) rb = GetComponent<Rigidbody>();
 
         if (!playerTransform)
 		{
@@ -40,7 +43,8 @@ public class MinionScript : MonoBehaviour
 
     protected virtual void Move()
 	{
-        agent.destination = playerTransform.position;
+        if (agent.enabled == true) 
+            agent.destination = playerTransform.position;
     }
 
     private void OnCollisionEnter(Collision col)
@@ -51,8 +55,10 @@ public class MinionScript : MonoBehaviour
 			if (temp.GetComponent<PlayerMovement>().GetCharged())
 			{
                 ammoGO.SetActive(true);
-                ammoGO.transform.position = transform.position;
-                ammoGO.transform.rotation = transform.rotation;
+                Transform trans = ammoGO.transform;
+                trans.position = transform.position;
+                trans.rotation = transform.rotation;
+                trans.localScale = transform.localScale;
                 ammoGO.GetComponent<Rigidbody>().velocity = rb.velocity;
                 gameObject.SetActive(false);
 			}
@@ -60,14 +66,17 @@ public class MinionScript : MonoBehaviour
 			{
                 StartCoroutine(MinionExplosion());
             }
-            return;
         }
 
-        if(temp.tag == "PlayerBullet")
+        else if(temp.tag == "PlayerBullet")
 		{
             TurnToAmmo();	
 		}
-	}
+
+        CollisionFunc(col);
+    }
+
+    protected virtual void CollisionFunc(Collision col) { } 
 
     private IEnumerator MinionExplosion()
 	{

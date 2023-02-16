@@ -8,8 +8,10 @@ public abstract class BossManagerParentClass : MonoBehaviour
     [SerializeField]
     protected float health;
 
+    protected float maxHealth;
+
     [SerializeField]
-    protected BossParentClass abilitiesClass;
+    protected ParticleSystem explodeParticles; 
 
     [SerializeField]
     protected Slider healthSlider;
@@ -19,6 +21,7 @@ public abstract class BossManagerParentClass : MonoBehaviour
     {
         healthSlider.maxValue = health;
         healthSlider.value = health;
+        maxHealth = health;
 
         StartFunc();
     }

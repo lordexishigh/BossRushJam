@@ -8,6 +8,7 @@ TagManager:
   - Boss
   - Harmful
   - PlayerBullet
+  - Floor
   layers:
   - Default
   - TransparentFX

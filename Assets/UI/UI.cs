@@ -26,4 +26,9 @@ public class UI : MonoBehaviour
 	{
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
+
+    public static int GetActiveSceneIndex()
+	{
+        return SceneManager.GetActiveScene().buildIndex;
+    }
 }

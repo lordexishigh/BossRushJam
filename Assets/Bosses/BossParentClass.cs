@@ -17,9 +17,9 @@ public abstract class BossParentClass : MonoBehaviour
 
     protected static PoolingClass shootObjPool;// = new Queue<GameObject>();
 
-    protected static PoolingClass minionObjPool;// = new Queue<GameObject>();
+    public static PoolingClass minionObjPool;// = new Queue<GameObject>();
 
-    protected Transform floorTransform;
+    protected static Transform floorTransform;
 
     protected Transform playerTransform;
 
@@ -37,47 +37,42 @@ public abstract class BossParentClass : MonoBehaviour
         abilitiesActive = 0;
         maxAbilitiesActive = 1;
 
-        floorTransform = GameObject.Find("Floor").GetComponent<Transform>();
         playerTransform = GameObject.FindWithTag("Player").GetComponent<Transform>();
         parentTransform = transform.parent;
 
-        float floorScaleDivided = floorTransform.localScale.x / 4;
-
-        for (int i = -1; i < 2; i = i + 2)
+        if (UI.GetActiveSceneIndex() != 3)
         {
-            for (int j = -1; j < 2; j = j + 2)
+            floorTransform = GameObject.Find("Floor").GetComponent<Transform>();
+
+            float floorScaleDivided = floorTransform.localScale.x / 4;
+
+            for (int i = -1; i < 2; i = i + 2)
             {
-                targetPositions.Add(transform.position + new Vector3(floorScaleDivided * i, floorTransform.position.y + floorTransform.localScale.y / 2 + 5, floorScaleDivided * j));
+                for (int j = -1; j < 2; j = j + 2)
+                {
+                    targetPositions.Add(transform.position + new Vector3(floorScaleDivided * i, floorTransform.position.y + floorTransform.localScale.y / 2 + 5, floorScaleDivided * j));
+                }
             }
         }
 
 		if (!miniBoss)
 		{
-            if (shootObjPool == null) shootObjPool = new PoolingClass(ObjectToShot, transform.position);
-            if (minionObjPool == null) minionObjPool = new PoolingClass(Minion, transform.position);
+            if (shootObjPool == null) shootObjPool = new PoolingClass(ObjectToShot);
+            if (minionObjPool == null) minionObjPool = new PoolingClass(Minion);
         }
-
-        //GameObject obj;
-
-        //for (int i = 0; i < 200; i++)
-        //{
-        //    obj = Instantiate(ObjectToShot, transform.position, Quaternion.identity);
-        //    obj.SetActive(false);
-        //    shootObjQueue.Enqueue(obj);
-
-        //    obj = Instantiate(Minion, transform.position, Quaternion.identity);
-        //    obj.SetActive(false);
-        //    minionGOQueue.Enqueue(obj);
-        //}
 
         StartFunc();
     }
 
     protected virtual void StartFunc() { }
 
-    public static void SetInRange(bool state)
+    public static void SetInRange(bool state, Transform _floorTransform = null)
     {
         inRange = state;
+		if (_floorTransform)
+		{
+            floorTransform = _floorTransform;
+		}
     }
 
     public static bool GetInRange()

@@ -13,6 +13,7 @@ public class SquareBossAbilities : BossParentClass
     //    //StartCoroutine(MinionSpawn(2));
     //   // StartCoroutine(SmashPlayer(2));
     //}
+    protected override void StartFunc() { StartCoroutine(MinionSpawn(2)); }
 
     private void Update()
     {

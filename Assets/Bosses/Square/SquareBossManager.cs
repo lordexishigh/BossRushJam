@@ -5,10 +5,13 @@ using UnityEngine.UI;
 
 public class SquareBossManager : BossManagerParentClass
 {
+    [SerializeField]
+    protected SquareBossAbilities abilitiesClass;
+
     private GameObject shield;
     private Slider shieldSlider;
     private bool shielded;
-    private float shieldHealth;
+    private float shieldHealth; 
 
     protected override void StartFunc()
 	{

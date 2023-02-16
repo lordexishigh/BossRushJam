@@ -23,9 +23,9 @@ public class TriangleBossAbilities : BossParentClass
 		//	rb = GetComponent<Rigidbody>();
 		tManager = GetComponent<TriangleBossManager>();
 
-		throwingDoritosObjPool = new PoolingClass(throwingDoritoObject, transform.position);
+		throwingDoritosObjPool = new PoolingClass(throwingDoritoObject);
 
-		explosiveDoritosObjPool = new PoolingClass(explosiveDoritoObject, transform.position);
+		explosiveDoritosObjPool = new PoolingClass(explosiveDoritoObject);
 
 		stopSpinning = false;
 		//StartCoroutine(ThrowingDoritos());

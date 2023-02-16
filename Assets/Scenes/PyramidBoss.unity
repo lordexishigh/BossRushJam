@@ -17,7 +17,7 @@ RenderSettings:
   m_Fog: 1
   m_FogColor: {r: 1, g: 0.48490566, b: 1, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.0003
+  m_FogDensity: 0.0005
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.9647059, g: 0, b: 1, a: 1}
@@ -34051,19 +34051,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7601577429664567026, guid: c86805b61f328c14ab002a66ffccc875, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.96504915
+      value: 0.9721591
       objectReference: {fileID: 0}
     - target: {fileID: 7601577429664567026, guid: c86805b61f328c14ab002a66ffccc875, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.26206928
+      value: 0.23432173
       objectReference: {fileID: 0}
     - target: {fileID: 7601577429664567026, guid: c86805b61f328c14ab002a66ffccc875, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000059604645
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7601577429664567026, guid: c86805b61f328c14ab002a66ffccc875, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000014901161
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7601577430233382442, guid: c86805b61f328c14ab002a66ffccc875, type: 3}
       propertyPath: m_Mesh

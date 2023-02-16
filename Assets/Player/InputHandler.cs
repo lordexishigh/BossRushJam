@@ -18,7 +18,7 @@ public class InputHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        mov.Move(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+        mov.Move(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
 
 		if (Input.GetButtonDown("Jump"))
 		    mov.Jump();

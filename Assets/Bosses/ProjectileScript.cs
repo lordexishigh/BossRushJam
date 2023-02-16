@@ -13,6 +13,13 @@ public class ProjectileScript : MonoBehaviour
     [SerializeField]
     private GameObject visuals;
 
+    protected Quaternion startingQuaternion;
+
+    private void Awake()
+	{
+        startingQuaternion = transform.rotation;
+	}
+
     protected virtual void OnCollisionEnter(Collision col)
 	{
         StartCoroutine(DeactivateProjectile());
@@ -37,6 +44,6 @@ public class ProjectileScript : MonoBehaviour
 
     private void OnDisable()
 	{
-        transform.rotation = Quaternion.identity;
+        transform.rotation = startingQuaternion;
 	}
 }

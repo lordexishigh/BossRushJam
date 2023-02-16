@@ -6,11 +6,11 @@ public class PoolingClass
 {
     private Queue<GameObject> objectQueue = new Queue<GameObject>();
 
-    public PoolingClass(GameObject obj, Vector3 pos, int amount = 100)
+    public PoolingClass(GameObject obj, int amount = 100)
     {
         for (int i = 0; i < amount; i++)
         {
-            obj = GameObject.Instantiate(obj, pos, Quaternion.identity) as GameObject;
+            obj = GameObject.Instantiate(obj) as GameObject;
             obj.SetActive(false);
             objectQueue.Enqueue(obj);
         }

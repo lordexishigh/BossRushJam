@@ -79,7 +79,7 @@ public class AmmoableScript : MonoBehaviour
 
         shooting.AddShootableObject(transform.gameObject);
 
-        transform.localScale = Vector3.one * 0.6f;
+        //transform.localScale = Vector3.one * 0.6f;
         transform.position = playerTransform.position + Vector3.up / 2;
         gameObject.layer = LayerMask.NameToLayer("InnerPlayer");
 

@@ -6,7 +6,7 @@ public class TriangleBossManager : BossManagerParentClass
 {
 	[SerializeField]
     private GameObject miniBosses;
-   // private TriangleBossAbilities tAbilities;
+    private TriangleBossAbilities abilitiesClass;
 
     protected override void StartFunc()
     {
@@ -35,7 +35,7 @@ public class TriangleBossManager : BossManagerParentClass
         if (!(obj.tag == "PlayerBullet")) return;
 
         health -= 5;
-        print(healthSlider);
+
         healthSlider.value = health;
 
         if (health > 0) return;

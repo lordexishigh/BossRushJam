@@ -1,0 +1,13 @@
+# Blender v2.91.2 OBJ File: ''
+# www.blender.org
+mtllib StarFloor.mtl
+o Small_Stellated_Dodecahedron_Ornament
+v -6.103846 -1.413223 12.712754
+v -14.020172 -1.189226 -2.029321
+v 10.361973 -1.643432 9.737525
+v -2.445504 -1.282422 -14.114692
+v 12.623421 -1.563207 -6.843250
+vn -0.0153 -0.9999 -0.0069
+usemtl None
+s 1
+f 5//1 3//1 1//1 2//1 4//1
